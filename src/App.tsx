@@ -1,11 +1,14 @@
 import React from 'react';
 import './App.css';
+import GeneralContainer from './components/GeneralContainer';
+
+import {Typography} from '@mui/material'
 
 function App() {
   return (
-    <div>
-      <h1>TESTING</h1>
-    </div>
+    <GeneralContainer>
+      <Typography color='#FBF2C0' variant='h2'>Testing</Typography>
+    </GeneralContainer>
   );
 }
 
