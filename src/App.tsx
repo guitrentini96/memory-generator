@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
 import GeneralContainer from './components/GeneralContainer';
-
-import {Typography} from '@mui/material'
+import WelcomePage from './components/WelcomePage';
+import ListPage from './components/ListPage'
 
 function App() {
+  const [startList, setStartList] = React.useState<boolean>(false)
+
   return (
     <GeneralContainer>
-      <Typography color='#FBF2C0' variant='h2'>Testing</Typography>
+      {startList ? <ListPage/> : <WelcomePage setStartList={setStartList}/> }
     </GeneralContainer>
   );
 }
