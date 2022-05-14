@@ -3,6 +3,7 @@ import {Typography, Button} from '@mui/material'
 import { Item, Category } from '../model'
 import NewItem from './NewItem'
 import CategoriesToggle from './CategoriesToggle'
+import NewItemForm from './NewItemForm'
 
 const ListPage:React.FC = () => {
     const categories:Category[] = 
@@ -13,6 +14,7 @@ const ListPage:React.FC = () => {
     {name:'TV Show', icon:'📺'}]
     const [items, setItems] = React.useState<Item[]>([])
     const [selectedCategory, setSelectedCategory] = React.useState<string>(categories[0].name)
+    const [editingItem, setEditingItem] = React.useState<boolean>(false)
 
     const renderItems = () => {
         const itemsList = items.filter(item => item.category === selectedCategory)
@@ -20,17 +22,18 @@ const ListPage:React.FC = () => {
         return(itemsList)
     }
 
-    const addItem = () => {
-        const newItem:Item = {title:`New ${selectedCategory}`, description:`New ${selectedCategory} description`, category:selectedCategory}
+    const addItem = (newItem:Item) => {
         setItems([...items,newItem])
+        setEditingItem(false)
     }
 
     return (
         <>
             <Typography variant='h3' marginBottom={3}>List Started</Typography>
-            <CategoriesToggle categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}/>
+            <CategoriesToggle categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} disabled={editingItem}/>
             {renderItems()}
-            <Button onClick={addItem} sx={{marginTop:'20px'}}>Add new item</Button>
+            {editingItem ? <NewItemForm addItem={addItem} selectedCategory={selectedCategory} setEditingItem={setEditingItem}/> : <Button onClick={()=>setEditingItem(true)} sx={{marginTop:'20px'}}>Add new item</Button>}
+            
         </>
     )
 }

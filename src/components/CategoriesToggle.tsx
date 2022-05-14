@@ -7,9 +7,10 @@ interface Props{
     categories: Category[];
     selectedCategory: string;
     setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+    disabled:boolean;
 }
 
-const CategoriesToggle:React.FC<Props> = ({categories,selectedCategory,setSelectedCategory}) => {
+const CategoriesToggle:React.FC<Props> = ({categories,selectedCategory,setSelectedCategory,disabled}) => {
 
     const handleCategoryChange = (event: React.MouseEvent<HTMLElement>,newCategory:string) => {
         if(newCategory !== null){
@@ -23,6 +24,7 @@ const CategoriesToggle:React.FC<Props> = ({categories,selectedCategory,setSelect
         exclusive
         onChange={handleCategoryChange}
         aria-label="category"
+        disabled={disabled}
     >
         {categories.map(category => <ToggleButton value={category.name} aria-label={category.name} key={category.name}>{category.icon}</ToggleButton>)}
     </ToggleButtonGroup>
