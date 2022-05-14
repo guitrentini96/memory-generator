@@ -8,9 +8,10 @@ interface Props{
 const NewItem:React.FC<Props> = ({item}) => {
 
     return (
-        <Stack p={'10px'}>
+        <Stack m={'10px'}>
             <Typography>{item.title}</Typography>
             <Typography>{item.description}</Typography>
+            <Typography>grade TODO</Typography>
         </Stack>
     )
 }
