@@ -25,6 +25,7 @@ const CategoriesToggle:React.FC<Props> = ({categories,selectedCategory,setSelect
         onChange={handleCategoryChange}
         aria-label="category"
         disabled={disabled}
+        sx={{flexWrap:'wrap'}}
     >
         {categories.map(category => <ToggleButton value={category.name} aria-label={category.name} key={category.name}>{category.icon}</ToggleButton>)}
     </ToggleButtonGroup>

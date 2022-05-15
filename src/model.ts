@@ -5,6 +5,7 @@ export interface Category{
 
 export interface Item{
     title:string;
-    description:string;
+    description?:string;
     category:string;
+    rating?:number;
 }

@@ -8,8 +8,8 @@ import NewItemForm from './NewItemForm'
 const ListPage:React.FC = () => {
     const categories:Category[] = 
     [{name:'Movie',icon:'🎬'},
-    {name:'Game',icon:'🕹'},
-    {name:'Location',icon:'🗺'},
+    {name:'Game',icon:'🎮'},
+    {name:'Location',icon:'🌎'},
     {name:'Book',icon:'📚'},
     {name:'TV Show', icon:'📺'}]
     const [items, setItems] = React.useState<Item[]>([])
@@ -30,9 +30,26 @@ const ListPage:React.FC = () => {
     return (
         <>
             <Typography variant='h3' marginBottom={3}>List Started</Typography>
-            <CategoriesToggle categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} disabled={editingItem}/>
+
+            <CategoriesToggle 
+            categories={categories} 
+            selectedCategory={selectedCategory} 
+            setSelectedCategory={setSelectedCategory} 
+            disabled={editingItem}/>
+
             {renderItems()}
-            {editingItem ? <NewItemForm addItem={addItem} selectedCategory={selectedCategory} setEditingItem={setEditingItem}/> : <Button onClick={()=>setEditingItem(true)} sx={{marginTop:'20px'}}>Add new item</Button>}
+
+            {editingItem ? 
+
+            <NewItemForm 
+            addItem={addItem} 
+            selectedCategory={selectedCategory} 
+            setEditingItem={setEditingItem}/> :
+
+             <Button 
+             onClick={()=>setEditingItem(true)} 
+             sx={{marginTop:'20px'}}>
+                 Add new item</Button>}
             
         </>
     )
