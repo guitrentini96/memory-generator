@@ -20,6 +20,7 @@ const CategoriesToggle:React.FC<Props> = ({categories,selectedCategory,setSelect
 
     return (
         <ToggleButtonGroup
+        size='large'
         value={selectedCategory}
         exclusive
         onChange={handleCategoryChange}

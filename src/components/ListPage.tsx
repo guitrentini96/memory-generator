@@ -1,24 +1,29 @@
 import React from 'react'
-import {Typography, Button} from '@mui/material'
+import {Typography, Button, Stack} from '@mui/material'
 import { Item, Category } from '../model'
 import NewItem from './NewItem'
 import CategoriesToggle from './CategoriesToggle'
 import NewItemForm from './NewItemForm'
 
-const ListPage:React.FC = () => {
-    const categories:Category[] = 
-    [{name:'Movie',icon:'🎬'},
-    {name:'Game',icon:'🎮'},
-    {name:'Location',icon:'🌎'},
-    {name:'Book',icon:'📚'},
-    {name:'TV Show', icon:'📺'}]
-    const [items, setItems] = React.useState<Item[]>([])
+interface Props{
+    items:Item[];
+    setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+    categories:Category[];
+    setEndList:React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ListPage:React.FC<Props> = ({items, setItems, categories, setEndList}) => {
     const [selectedCategory, setSelectedCategory] = React.useState<string>(categories[0].name)
     const [editingItem, setEditingItem] = React.useState<boolean>(false)
 
     const renderItems = () => {
+        const removeItem = (indexOfItem:number) => {
+            setItems(items.slice(0,indexOfItem).concat(items.slice(indexOfItem+1)))
+        }
         const itemsList = items.filter(item => item.category === selectedCategory)
-                               .map(function(item,index){return <NewItem key={index} item={item}/>})
+                               .map(function(item){
+                                   const indexOfItem:number = items.indexOf(item);
+                                   return <NewItem key={indexOfItem} index={indexOfItem} item={item} removeItem={removeItem} items={items} setItems={setItems}/>})
         return(itemsList)
     }
 
@@ -26,6 +31,7 @@ const ListPage:React.FC = () => {
         setItems([...items,newItem])
         setEditingItem(false)
     }
+
 
     return (
         <>
@@ -46,11 +52,15 @@ const ListPage:React.FC = () => {
             selectedCategory={selectedCategory} 
             setEditingItem={setEditingItem}/> :
 
-             <Button 
+             <Button variant='outlined'
+             disabled={editingItem}
              onClick={()=>setEditingItem(true)} 
              sx={{marginTop:'20px'}}>
-                 Add new item</Button>}
+                 Add new {selectedCategory}</Button>}
             
+            <Button onClick={() => setEndList(true)} sx={{marginTop:'50px'}} variant='outlined' color='success' disabled={editingItem || items.length === 0}>Done</Button>
+
+            <Button disabled={items.length === 0} onClick={() => setItems([])} sx={{marginTop:'50px'}} color='error' variant='outlined'>remove all items</Button>
         </>
     )
 }

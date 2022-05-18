@@ -12,7 +12,8 @@ const GeneralContainer:React.FC<Props> = ({children}) => {
         sx={{
           width: '100%',
           marginTop: '10vh',
-          height: '80vh',
+          marginBottom:'10vh',
+          minHeight: '80vh',
           padding: '10px',
           alignItems:'center'
         }}
