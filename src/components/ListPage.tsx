@@ -6,24 +6,28 @@ import CategoriesToggle from './CategoriesToggle'
 import NewItemForm from './NewItemForm'
 
 interface Props{
-    items:Item[];
-    setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+    setItemsList: React.Dispatch<React.SetStateAction<Item[]>>;
     categories:Category[];
     setEndList:React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ListPage:React.FC<Props> = ({items, setItems, categories, setEndList}) => {
+const ListPage:React.FC<Props> = ({setItemsList, categories, setEndList}) => {
+    const [items, setItems] = React.useState<Item[]>([])
     const [selectedCategory, setSelectedCategory] = React.useState<string>(categories[0].name)
     const [editingItem, setEditingItem] = React.useState<boolean>(false)
 
+    const deleteItem = (indexToDelete:number) => {
+        const newItems = items.filter(function(item,index){
+            return index !== indexToDelete;
+        })
+        setItems(newItems)
+    }
+
     const renderItems = () => {
-        const removeItem = (indexOfItem:number) => {
-            setItems(items.slice(0,indexOfItem).concat(items.slice(indexOfItem+1)))
-        }
         const itemsList = items.filter(item => item.category === selectedCategory)
                                .map(function(item){
                                    const indexOfItem:number = items.indexOf(item);
-                                   return <NewItem key={indexOfItem} index={indexOfItem} item={item} removeItem={removeItem} items={items} setItems={setItems}/>})
+                                   return <NewItem key={indexOfItem} index={indexOfItem} item={item} items={items} setItems={setItems} deleteItem={deleteItem}/>})
         return(itemsList)
     }
 
@@ -32,10 +36,14 @@ const ListPage:React.FC<Props> = ({items, setItems, categories, setEndList}) => 
         setEditingItem(false)
     }
 
+    // const createScreenshot = () => {
+    //     const list = document.getElementsByClassName('')
+    // }
+
 
     return (
         <>
-            <Typography variant='h3' marginBottom={3}>List Started</Typography>
+            <Typography variant='h3' marginBottom={3}>My memories</Typography>
 
             <CategoriesToggle 
             categories={categories} 
@@ -43,7 +51,11 @@ const ListPage:React.FC<Props> = ({items, setItems, categories, setEndList}) => 
             setSelectedCategory={setSelectedCategory} 
             disabled={editingItem}/>
 
+            <Stack id='items' sx={{width:'100%'}}>
+
             {renderItems()}
+            </Stack>
+
 
             {editingItem ? 
 
@@ -58,7 +70,7 @@ const ListPage:React.FC<Props> = ({items, setItems, categories, setEndList}) => 
              sx={{marginTop:'20px'}}>
                  Add new {selectedCategory}</Button>}
             
-            <Button onClick={() => setEndList(true)} sx={{marginTop:'50px'}} variant='outlined' color='success' disabled={editingItem || items.length === 0}>Done</Button>
+            <Button onClick={() => setItemsList(items)} sx={{marginTop:'50px'}} variant='outlined' color='success' disabled={editingItem || items.length === 0}>Done</Button>
 
             <Button disabled={items.length === 0} onClick={() => setItems([])} sx={{marginTop:'50px'}} color='error' variant='outlined'>remove all items</Button>
         </>

@@ -3,6 +3,8 @@ import './App.css';
 import GeneralContainer from './components/GeneralContainer';
 import WelcomePage from './components/WelcomePage';
 import ListPage from './components/ListPage'
+import ResultsPage from './components/ResultsPage';
+
 
 import { Item, Category } from './model'
 
@@ -16,16 +18,28 @@ function App() {
     {name:'Song',icon:'🎵'},
     {name:'TV Show', icon:'📺'}]
 
-  const [items, setItems] = React.useState<Item[]>([])
+  const [itemsList, setItemsList] = React.useState<Item[]>([])
   const [startList, setStartList] = React.useState<boolean>(false)
   const [endList, setEndList] = React.useState<boolean>(false)
+
+  React.useEffect(function(){
+    if(itemsList.length>0){
+      setEndList(true)
+    }
+  },[itemsList])
+
+  const resetList = () => {
+    setItemsList([]);
+    setStartList(false);
+    setEndList(false);
+  }
 
   return (
     <GeneralContainer>
       {startList ? 
         endList ?
-           <h1>the end</h1> :
-           <ListPage items={items} setItems={setItems} categories={categories} setEndList={setEndList}/>
+           <ResultsPage items={itemsList} categories={categories} resetList={resetList}/> :
+           <ListPage setItemsList={setItemsList} categories={categories} setEndList={setEndList}/>
         : 
         <WelcomePage setStartList={setStartList}/> }
     </GeneralContainer>

@@ -5,11 +5,11 @@ import {Item} from '../model'
 interface Props{
     index: number;
     item: Item;
-    removeItem: (indexOfItem: number) => void;
     items: Item[];
     setItems: React.Dispatch<React.SetStateAction<Item[]>>;
+    deleteItem: (index: number) => void;
 }
-const NewItem:React.FC<Props> = ({index, item, removeItem, items, setItems}) => {
+const NewItem:React.FC<Props> = ({index, item, items, setItems, deleteItem}) => {
 
     const [editing, setEditing] = React.useState<boolean>(false);
     const [title, setTitle] = React.useState<string>(item.title);
@@ -66,7 +66,7 @@ const NewItem:React.FC<Props> = ({index, item, removeItem, items, setItems}) => 
         }
         else{
             return(
-                <Typography sx={{marginTop:'10px'}} color='white'>{item.description}</Typography>
+                <Typography sx={{marginTop:'10px'}} color='white'>{description}</Typography>
             )
         }
     }
@@ -87,6 +87,11 @@ const NewItem:React.FC<Props> = ({index, item, removeItem, items, setItems}) => 
         }
     }
 
+    const handleDelete = () => {
+        console.log(items.slice(0,index).concat(items.slice(index+1)))
+        setItems(items.slice(0,index).concat(items.slice(index+1)))
+    }
+
 
     return (
         <Paper elevation={10} sx={{background:'rgba(0,0,0,0.2)', width:'100%', margin:'10px', padding:'10px'}}>
@@ -101,7 +106,7 @@ const NewItem:React.FC<Props> = ({index, item, removeItem, items, setItems}) => 
 
             <Stack direction='row' sx={{justifyContent:'flex-end', width:'100%'}}>
                 <Button disabled={title.length === 0} onClick={handleEditButton}>{editing ? 'SAVE' : 'EDIT'}</Button>
-                <Button color='error' onClick={() => removeItem(index)}>remove</Button>
+                <Button color='error' onClick={() => deleteItem(index)}>remove</Button>
             </Stack>
                 
             
